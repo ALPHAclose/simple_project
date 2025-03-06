@@ -64,3 +64,16 @@ async def get_student_by_id(test_id: int):
             return test
     
     raise HTTPException(status_code=404, detail="Test not found")
+
+
+@app.get("/tets/get_all", status_code=status.HTTP_200_OK)
+async def get_all_tests():
+    if not tests:
+        raise HTTPException(status_code=404, detail="Students not found")
+    return tests
+
+
+@app.post("/results/", status_code=status.HTTP_201_CREATED)
+async def post_results(result: TestResult):
+    test_results.append(result)
+    return {"message":"TestResults created successfully"}
