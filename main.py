@@ -20,7 +20,7 @@ response_message:List['ResponseMessage'] = []
 
 database = [students, tests, test_results]
 
-@app.post("/students/", status_code=status.HTTP_201_CREATED)
+@app.post("/students/POST", status_code=status.HTTP_201_CREATED)
 async def post_student(student: Student):
     students.append(student)
 
@@ -34,3 +34,10 @@ async def get_student_by_id(student_id: int):
             return student
     
     raise HTTPException(status_code=404, detail="Student not found")
+
+
+@app.get("/students/get_all", status_code=status.HTTP_200_OK)
+async def get_all_students():
+    if not students:
+        raise HTTPException(status_code=404, detail="Students not found")
+    return students
