@@ -19,3 +19,4 @@ class TestResult(BaseModel):
 
 class ResponseMessage(BaseModel):
     message: str
+
