@@ -14,7 +14,14 @@ students:List['Student'] = [
     Student(id=5, name="Emma Watson", email="emma@example.com", tests_taken=[100, 95, 98])
 ]
 
-tests:List['Test'] = []
+tests:List['Test'] = [
+    Test(id=1, name="Mathematics Exam", max_score=100),
+    Test(id=2, name="Physics Quiz", max_score=50),
+    Test(id=3, name="History Final", max_score=75),
+    Test(id=4, name="Computer Science Test", max_score=80),
+    Test(id=5, name="English Literature", max_score=90)
+]
+
 test_results:List['TestResult'] = []
 response_message:List['ResponseMessage'] = []
 
@@ -41,3 +48,11 @@ async def get_all_students():
     if not students:
         raise HTTPException(status_code=404, detail="Students not found")
     return students
+
+
+@app.post("/tests/POST", status_code=status.HTTP_201_CREATED)
+async def post_tests(test: Test):
+    tests.append(test)
+
+    return {"message":"Test created successfully"}
+
