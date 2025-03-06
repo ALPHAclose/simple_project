@@ -56,3 +56,11 @@ async def post_tests(test: Test):
 
     return {"message":"Test created successfully"}
 
+
+@app.get("/tests/{test_id}/", status_code=status.HTTP_200_OK)
+async def get_student_by_id(test_id: int):
+    for test in tests:
+        if test.id == test_id:
+            return test
+    
+    raise HTTPException(status_code=404, detail="Test not found")
