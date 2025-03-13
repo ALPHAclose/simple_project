@@ -22,7 +22,24 @@ tests:List['Test'] = [
     Test(id=5, name="English Literature", max_score=90)
 ]
 
-test_results:List['TestResult'] = []
+test_results: List[TestResult] = [
+    TestResult(student_id=1, test_id=1, score=85),
+    TestResult(student_id=1, test_id=2, score=90),
+    TestResult(student_id=1, test_id=3, score=78),
+    
+    TestResult(student_id=2, test_id=1, score=92),
+    TestResult(student_id=2, test_id=2, score=88),
+    
+    TestResult(student_id=3, test_id=1, score=75),
+    TestResult(student_id=3, test_id=2, score=80),
+    TestResult(student_id=3, test_id=3, score=85),
+    TestResult(student_id=3, test_id=4, score=90),
+    
+    TestResult(student_id=5, test_id=1, score=100),
+    TestResult(student_id=5, test_id=2, score=95),
+    TestResult(student_id=5, test_id=3, score=98),
+]
+
 response_message:List['ResponseMessage'] = []
 
 database = [students, tests, test_results]
@@ -79,13 +96,26 @@ async def post_results(result: TestResult):
     return {"message":"TestResults created successfully"}
 
 
-@app.get(" /results/student/{student_id}")
+@app.get("/results/student/{student_id}")
 async def get_results_from_student(student_id: int):
     for student in students:
         if student.id == student_id:
             return student.tests_taken
     raise HTTPException(status_code=404, detail="Student not found")
 
+
+@app.get("/results/test/{test_id}/")
+async def get_all_test_results_for_a_specific_test(test_id: int):
+    list_to_return = []
+
+    for test in test_results:
+        if test.id == test_id:
+            list_to_return.append(test)
+    
+    if not list_to_return:
+        raise HTTPException(status_code=404, detail="Tests not found")
+    
+    return list_to_return
 
 
 
