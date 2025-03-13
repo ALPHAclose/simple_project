@@ -77,3 +77,15 @@ async def get_all_tests():
 async def post_results(result: TestResult):
     test_results.append(result)
     return {"message":"TestResults created successfully"}
+
+
+@app.get(" /results/student/{student_id}")
+async def get_results_from_student(student_id: int):
+    for student in students:
+        if student.id == student_id:
+            return student.tests_taken
+    raise HTTPException(status_code=404, detail="Student not found")
+
+
+
+
