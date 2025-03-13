@@ -134,3 +134,33 @@ async def get_average_score(test_id: int):
     
     return {"message":"successfully", "average": average}
 
+@app.get("/results/test/{test_id}/highest")
+async def get_highest_score(test_id: int):
+    scores = []
+
+    for test in test_results:
+        if test.id == test_id:
+            scores.append(test.score)
+
+    if not scores:
+        raise HTTPException(status_code=404, detail="Tests not found")
+    
+    scores = scores.sort(reverse=True)
+
+    return {"message":"successfully", "highest":scores[0]}
+
+@app.get("/students/{student_id}")
+async def delete_student_by_id(student_id: int):
+    index = 0
+
+    for student in range(len(students)):
+        if students[student].id == student_id:
+            index = student
+        
+    if not index:
+        raise HTTPException(status_code=404, detail="Student not found")
+    
+    students.pop(index)
+
+    return {"message":"successfully","students":students}
+
