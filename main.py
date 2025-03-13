@@ -109,7 +109,7 @@ async def get_all_test_results_for_a_specific_test(test_id: int):
     list_to_return = []
 
     for test in test_results:
-        if test.id == test_id:
+        if test.test_id == test_id:
             list_to_return.append(test)
     
     if not list_to_return:
@@ -123,11 +123,11 @@ async def get_average_score(test_id: int):
     count = 0
 
     for test in test_results:
-        if test.id == test_id:
+        if test.test_id == test_id:
             sum_of_scores += test.score
             count += 1
 
-    if sum_of_scores:
+    if not sum_of_scores:
         raise HTTPException(status_code=404, detail="Tests not found")
     
     average = sum_of_scores / count
@@ -139,17 +139,20 @@ async def get_highest_score(test_id: int):
     scores = []
 
     for test in test_results:
-        if test.id == test_id:
+        if test.test_id == test_id:
             scores.append(test.score)
 
     if not scores:
         raise HTTPException(status_code=404, detail="Tests not found")
     
     scores = scores.sort(reverse=True)
+    
 
-    return {"message":"successfully", "highest":scores[0]}
+    print(scores)
 
-@app.get("/students/{student_id}")
+    return {"message":"successfully"}
+
+@app.delete("/students/{student_id}")
 async def delete_student_by_id(student_id: int):
     index = 0
 
@@ -157,7 +160,7 @@ async def delete_student_by_id(student_id: int):
         if students[student].id == student_id:
             index = student
         
-    if not index:
+    if index:
         raise HTTPException(status_code=404, detail="Student not found")
     
     students.pop(index)
