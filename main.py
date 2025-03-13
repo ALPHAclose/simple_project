@@ -117,5 +117,20 @@ async def get_all_test_results_for_a_specific_test(test_id: int):
     
     return list_to_return
 
+@app.get("/results/test/{test_id}/average")
+async def get_average_score(test_id: int):
+    sum_of_scores = 0
+    count = 0
 
+    for test in test_results:
+        if test.id == test_id:
+            sum_of_scores += test.score
+            count += 1
+
+    if sum_of_scores:
+        raise HTTPException(status_code=404, detail="Tests not found")
+    
+    average = sum_of_scores / count
+    
+    return {"message":"successfully", "average": average}
 
